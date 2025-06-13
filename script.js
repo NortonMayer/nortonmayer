@@ -1,3 +1,3 @@
 function mostrarAlerta() {
-  alert("Você clicou no botão! 🚀");
+  alert("Eu te disse pra não clicar! 🚀");
 }
