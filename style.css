@@ -1,11 +1,14 @@
+/* ESTILOS BASE */
 body {
   margin: 0;
   padding: 0;
   overflow: hidden;
   font-family: 'Courier New', monospace;
   color: #0f0;
+  transition: all 0.3s; /* Adicionado para suavizar o efeito glitch */
 }
 
+/* FUNDO MATRIX */
 #matrix-bg {
   position: fixed;
   top: 0;
@@ -15,6 +18,7 @@ body {
   z-index: -1;
 }
 
+/* CONTEÚDO PRINCIPAL */
 .content {
   position: relative;
   z-index: 1;
@@ -29,10 +33,12 @@ body {
   justify-content: space-between;
 }
 
+/* TIPOGRAFIA */
 h1, h2 {
   text-shadow: 0 0 10px #0f0;
 }
 
+/* BOTÃO PERIGOSO */
 button {
   background: transparent;
   color: #0f0;
@@ -51,6 +57,7 @@ button:hover {
   box-shadow: 0 0 20px #0f0;
 }
 
+/* CARD DE ALERTA */
 .card {
   border: 1px solid #0f0;
   padding: 30px;
@@ -58,7 +65,43 @@ button:hover {
   box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
 }
 
+/* RODAPÉ */
 footer {
   margin-top: 40px;
   opacity: 0.8;
+}
+
+/*********************************************/
+/* RECURSO OPCIONAL - EFEITO GLITCH (ANIMAÇÃO) */
+/*********************************************/
+@keyframes glitch {
+  0% { 
+    filter: hue-rotate(0deg) brightness(1);
+    transform: translateX(0);
+  }
+  20% { 
+    filter: hue-rotate(10deg) brightness(1.2);
+    transform: translateX(-2px);
+  }
+  40% { 
+    filter: hue-rotate(-10deg) brightness(0.8);
+    transform: translateX(2px);
+  }
+  60% { 
+    filter: hue-rotate(5deg) brightness(1.1);
+    transform: translateX(1px);
+  }
+  80% { 
+    filter: hue-rotate(-5deg) brightness(0.9);
+    transform: translateX(-1px);
+  }
+  100% { 
+    filter: hue-rotate(0deg) brightness(1);
+    transform: translateX(0);
+  }
+}
+
+/* Classe para ativar/desativar o glitch */
+.glitch-effect {
+  animation: glitch 0.5s infinite;
 }
