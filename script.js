@@ -1,66 +1,70 @@
-document.addEventListener('DOMContentLoaded', function() {
-  // Efeito Matrix Rain
-  const container = document.querySelector('.matrix-rain');
-  const canvas = document.createElement('canvas');
-  container.appendChild(canvas);
+// Configuração do efeito Matrix no fundo
+const canvas = document.getElementById('matrix-bg');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const characters = "日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+for (let i = 0; i < columns; i++) {
+  drops[i] = Math.random() * -100;
+}
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   
-  canvas.style.position = 'absolute';
-  canvas.width = container.offsetWidth;
-  canvas.height = container.offsetHeight;
+  ctx.fillStyle = '#0f0';
+  ctx.font = fontSize + 'px monospace';
   
-  const ctx = canvas.getContext('2d');
-  const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-  const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const nums = '0123456789';
-  const alphabet = katakana + latin + nums;
-  
-  const fontSize = 14;
-  const columns = canvas.width / fontSize;
-  const drops = Array(Math.floor(columns)).fill(1);
-  
-  function draw() {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#0F0';
-    ctx.font = fontSize + 'px monospace';
+  for (let i = 0; i < drops.length; i++) {
+    const text = characters.charAt(Math.floor(Math.random() * characters.length));
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
     
-    for (let i = 0; i < drops.length; i++) {
-      const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-      
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-      drops[i]++;
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
     }
+    drops[i]++;
   }
+}
+
+// Efeito do botão perigoso
+document.getElementById('danger-btn').addEventListener('click', function() {
+  // Efeito visual
+  document.body.style.animation = 'glitch 0.5s infinite';
+  this.style.backgroundColor = '#f00';
+  this.style.color = '#fff';
+  this.style.boxShadow = '0 0 30px #f00';
+  this.textContent = 'SISTEMA COMPROMETIDO!';
   
-  // Botão de interação
-  const matrixBtn = document.getElementById('matrix-btn');
+  // Efeito sonoro (opcional - descomente se quiser)
+  // const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
+  // audio.play();
   
-  matrixBtn.addEventListener('click', function() {
-    // Efeito especial ao clicar
-    container.style.height = '400px';
-    canvas.height = 400;
-    container.style.border = '2px solid #f00';
-    container.style.boxShadow = '0 0 20px #f00';
+  // Mensagem de alerta
+  setTimeout(() => {
+    alert('⚠️ ALERTA DE VÍRUS DETECTADO! ⚠️\nO sistema pode ter sido comprometido.');
     
-    // Alerta personalizado
+    // Restaura o botão após 3 segundos
     setTimeout(() => {
-      alert('⚠️ SISTEMA COMPROMETIDO ⚠️\nVocê ativou o protocolo Matrix!');
-      container.style.height = '200px';
-      canvas.height = 200;
-      container.style.border = '1px solid lime';
-      container.style.boxShadow = 'none';
-    }, 1000);
-  });
-  
-  // Inicia a animação
-  setInterval(draw, 33);
-  
-  // Ajusta o canvas quando a janela é redimensionada
-  window.addEventListener('resize', function() {
-    canvas.width = container.offsetWidth;
-    canvas.height = container.offsetHeight;
-  });
+      this.style.backgroundColor = 'transparent';
+      this.style.color = '#0f0';
+      this.style.boxShadow = 'none';
+      this.textContent = 'Não clique aqui';
+      document.body.style.animation = 'none';
+    }, 3000);
+  }, 1000);
 });
+
+// Redimensionamento responsivo
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// Inicia a animação
+setInterval(drawMatrix, 33);
